@@ -1,0 +1,41 @@
+# Create a deployment with
+# `kubectl create -f manifest.yaml`
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deno-api
+  creationTimestamp: null
+  labels:
+    app: deno-api
+
+spec:
+  # type: NodePort
+  # ports:
+  #   # access service via this external port number
+  #   - nodePort: 30163
+  #     # port number exposed internally in cluster
+  #     port: 1993
+  #     # port that the containers are listening on
+  #     targetPort: 1993
+  replicas: 3
+  selector:
+    matchLabels:
+      app: deno-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: deno-api
+    spec:
+      # the name passed to docker
+      # `docker build -t deno-docker
+      containers:
+        - image: deno-docker:0.0.4
+          name: deno-docker
+          # tell the Kubernetes docker daemon to not pull
+          imagePullPolicy: Never
+          resources: {}
+          ports:
+            - containerPort: 1993
+status: {}
