@@ -1,15 +1,15 @@
-FROM hayd/alpine-deno:1.0.5
+# select image
+FROM rust:1.44
+
+# copy your source tree
+COPY ./ ./
+
+# build for release
+RUN cargo build --release
 
 EXPOSE 1993
 
-WORKDIR /app
+# set the startup command to run your binary
+CMD ["./target/release/minikube"]
 
-USER deno
-
-COPY deps.ts .
-RUN deno cache deps.ts
-
-ADD . .
-RUN deno cache main.ts
-
-CMD ["run", "--allow-net", "main.ts"]
+EXPOSE 1993
