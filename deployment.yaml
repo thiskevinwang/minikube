@@ -2,25 +2,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deno-api
+  name: rust-api
   labels:
-    components: deno-api
+    components: rust-api
     # tier: frontend
 spec:
   selector:
     matchLabels:
-      component: deno-api
+      component: rust-api
       # tier: frontend
   template:
     metadata:
       labels:
-        component: deno-api
+        component: rust-api
         # tier: frontend
     spec:
       containers:
-        - name: deno-docker
-          image: deno-docker:0.0.4
+        - name: rust-docker
+          image: rust-docker
           imagePullPolicy: Never
           resources: {}
           ports:
-            - containerPort: 1993
+            - containerPort: 3009

@@ -16,7 +16,7 @@ struct Payload {
 // curl --header "Content-Type: application/json" \
 //  --request POST \
 //  --data '{"username":"xyz","password":"xyz"}' \
-//  http://localhost:1993/echo
+//  http://localhost:3009/echo
 async fn handle(req: Request<Body>) -> Result<Response<Body>, Infallible> {
     let mut response = Response::new(Body::empty());
 
@@ -96,7 +96,7 @@ async fn shutdown_signal() {
 
 #[tokio::main]
 async fn main() {
-    let addr = SocketAddr::from(([127, 0, 0, 1], 1993));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3009));
 
     let make_svc = make_service_fn(|_conn| async { Ok::<_, Infallible>(service_fn(handle)) });
 

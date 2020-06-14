@@ -1,15 +1,18 @@
-# select image
-FROM rust:1.44
+FROM rust:1.44 as builder
 
-# copy your source tree
-COPY ./ ./
+# muslc is required in order to build the rust image.
+RUN apt-get update && apt-get -y install ca-certificates cmake musl-tools libssl-dev && rm -rf /var/lib/apt/lists/*
 
-# build for release
-RUN cargo build --release
+COPY . .
+RUN rustup target add x86_64-unknown-linux-musl
+# Sets the environment variable for the cargo build command that follows.
+ENV PKG_CONFIG_ALLOW_CROSS=1
+RUN cargo build --target x86_64-unknown-linux-musl --release
 
-EXPOSE 1993
 
-# set the startup command to run your binary
-CMD ["./target/release/minikube"]
+FROM alpine:3.8
 
-EXPOSE 1993
+RUN apk --no-cache add ca-certificates 
+COPY --from=builder /target/x86_64-unknown-linux-musl/release/minikube .
+
+CMD ["/minikube"]

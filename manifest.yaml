@@ -3,10 +3,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deno-api
+  name: rust-api
   creationTimestamp: null
   labels:
-    app: deno-api
+    app: rust-api
 
 spec:
   # type: NodePort
@@ -14,25 +14,25 @@ spec:
   #   # access service via this external port number
   #   - nodePort: 30163
   #     # port number exposed internally in cluster
-  #     port: 1993
+  #     port: 3009
   #     # port that the containers are listening on
-  #     targetPort: 1993
+  #     targetPort: 3009
   replicas: 3
   selector:
     matchLabels:
-      app: deno-api
+      app: rust-api
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: deno-api
+        app: rust-api
     spec:
       # the name passed to docker
       # `docker build -t deno-docker
       containers:
-        - image: deno-docker:0.0.4
-          name: deno-docker
+        - image: rust-docker
+          name: rust-docker
           # tell the Kubernetes docker daemon to not pull
           imagePullPolicy: Never
           resources: {}
